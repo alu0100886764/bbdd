@@ -1,0 +1,229 @@
+SQL> SPOOL
+currently spooling to PRACT6.lst
+SQL> SELECT SYSDATE
+  2  FROM DUAL;
+
+SYSDATE                                                                         
+---------                                                                       
+15-NOV-17                                                                       
+
+SQL> SELECT SYSTIME
+  2  FROM DUAL;
+SELECT SYSTIME
+       *
+ERROR at line 1:
+ORA-00904: "SYSTIME": invalid identifier 
+
+
+SQL> SELECT SYSTIMESTAMP
+  2  FROM DUAL;
+
+SYSTIMESTAMP                                                                    
+---------------------------------------------------------------------------     
+15-NOV-17 01.26.20.423586 PM +00:00                                             
+
+SQL> SELECT SYSDATE
+  2  FROM DUAL;
+
+SYSDATE                                                                         
+---------                                                                       
+15-NOV-17                                                                       
+
+SQL> SELECT SYSTIMESTAMP
+  2  FROM DUAL;
+
+SYSTIMESTAMP                                                                    
+---------------------------------------------------------------------------     
+15-NOV-17 01.27.38.826412 PM +00:00                                             
+
+SQL> SELECT CURRENT_TIMESTAMP
+  2  FROM DUAL;
+
+CURRENT_TIMESTAMP                                                               
+---------------------------------------------------------------------------     
+15-NOV-17 01.28.31.337550 PM +00:00                                             
+
+SQL> SELECT CURRENT_DATE
+  2  FROM DUAL;
+
+CURRENT_D                                                                       
+---------                                                                       
+15-NOV-17                                                                       
+
+SQL> SELECT TO_CHAR(SYSDATE,'HH:MI:SS')
+  2  FROM DUAL;
+
+TO_CHAR(                                                                        
+--------                                                                        
+01:29:34                                                                        
+
+SQL> SELECT TO_CHAR(SYSDATE,'HH-MI-SS')
+  2  FROM DUAL;
+
+TO_CHAR(                                                                        
+--------                                                                        
+01-32-17                                                                        
+
+SQL> ALTER TABLE DEPARTAMENTO
+  2  ADD (D TIMESTAMP(8) DEFAULT SYSTIMESTAMP(8));
+ADD (D TIMESTAMP(8) DEFAULT SYSTIMESTAMP(8))
+     *
+ERROR at line 2:
+ORA-01430: column being added already exists in table 
+
+
+SQL> ALTER TABLE DEPARTAMENTO
+  2  ADD (D1 TIMESTAMP(8) DEFAULT SYSTIMESTAMP(8));
+
+Table altered.
+
+SQL> SELECT *
+  2  FROM DEPARTAMENTO;
+
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+D1                                                                              
+---------------------------------------------------------------------------     
+         1 ANALISIS MATEMATICO                                                  
+15-NOV-17 01.34.56.47270000 PM                                                  
+                                                                                
+         2 ASTROFISICA                                                          
+15-NOV-17 01.34.56.47270000 PM                                                  
+                                                                                
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                   
+15-NOV-17 01.34.56.47270000 PM                                                  
+                                                                                
+
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+D1                                                                              
+---------------------------------------------------------------------------     
+         4 MATEMATICA FUNDAMENTAL                                               
+15-NOV-17 01.34.56.47270000 PM                                                  
+                                                                                
+
+SQL> SELECT D1
+  2  FROM DEPARTAMENTO;
+
+D1                                                                              
+---------------------------------------------------------------------------     
+15-NOV-17 01.34.56.47270000 PM                                                  
+15-NOV-17 01.34.56.47270000 PM                                                  
+15-NOV-17 01.34.56.47270000 PM                                                  
+15-NOV-17 01.34.56.47270000 PM                                                  
+
+SQL> ALTER TABLE DEPARTAMENTO
+  2  DROP COLUMN D1;
+
+Table altered.
+
+SQL> SELECT D1
+  2  FROM DEPARTAMENTO;
+SELECT D1
+       *
+ERROR at line 1:
+ORA-00904: "D1": invalid identifier 
+
+
+SQL> DROP TABLE DEPARTAMENTO;
+DROP TABLE DEPARTAMENTO
+           *
+ERROR at line 1:
+ORA-02449: unique/primary keys in table referenced by foreign keys 
+
+
+SQL> DESCRIBE DEPARTAMENTO;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CD                                        NOT NULL NUMBER(2)
+ D                                                  VARCHAR2(60)
+
+SQL> ALTER TABLE DEPARTAMENTO
+  2  MODIFY (D VARCHAR2(50);
+MODIFY (D VARCHAR2(50)
+                     *
+ERROR at line 2:
+ORA-00907: missing right parenthesis 
+
+
+SQL> MODIFY (D VARCHAR2(50));
+SP2-0734: unknown command beginning "MODIFY (D ..." - rest of line ignored.
+SQL> ALTER TABLE DEPARTAMENTO
+  2  MODIFY (D VARCHAR2(50));
+
+Table altered.
+
+SQL> DESCRIBE DEPARTAMENTO;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CD                                        NOT NULL NUMBER(2)
+ D                                                  VARCHAR2(50)
+
+SQL> SELECT DNI
+  2  FROM PLAN_DOCENTE
+  3  WHERE(FF=NULL)
+  4  GROUP BY DNI
+  5  HAVING COUNT (*) > 2;
+
+no rows selected
+
+SQL> SELECT DNI
+  2  FROM PLAN_DOCENTE
+  3  WHERE(FF=NULL)
+  4  GROUP BY DNI;
+
+no rows selected
+
+SQL> SELECT DNI
+  2  FROM PLAN_DOCENTE
+  3  WHERE(FF=NULL);
+
+no rows selected
+
+SQL> SELECT DNI
+  2  FROM PLAN_DOCENTE
+  3  WHERE(FF='NULL');
+WHERE(FF='NULL')
+         *
+ERROR at line 3:
+ORA-01858: a non-numeric character was found where a numeric was expected 
+
+
+SQL> SELECT DNI
+  2  ;
+
+*
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> ALTER TABLE DEPARTAMENTO
+  2  ;
+
+*
+ERROR at line 2:
+ORA-02210: no options specified for ALTER TABLE 
+
+
+SQL> DESCRIBE DEPARTAMENTO
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CD                                        NOT NULL NUMBER(2)
+ D                                                  VARCHAR2(50)
+
+SQL> ALTER TABLE DEPARTAMENTO
+  2  MODIFY (D VARCHAR2(60));
+
+Table altered.
+
+SQL> SELECT DNI
+  2  FROM PLAN_DOCENTE
+  3  WHERE(SELECT CAS,T
+  4  FROM ASIGNATURA);
+FROM ASIGNATURA)
+               *
+ERROR at line 4:
+ORA-00936: missing expression 
+
+
+SQL> SPOOL OFF
