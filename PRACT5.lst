@@ -291,3 +291,232 @@ P
 IVAN                                                                            
 
 SQL> spool off
+SQL> SPOOL
+currently spooling to PRACT5.lst
+SQL> SELECT CAS
+  2  FROM PLAN_DOCENTE
+  3  WHERE DNI=1010;
+
+       CAS                                                                      
+----------                                                                      
+         2                                                                      
+         9                                                                      
+         9                                                                      
+
+SQL> SELECT CAS
+  2  FROM PLAN_DOCENTE
+  3  WHERE DNI=1010 AND FF IS NULL;
+
+       CAS                                                                      
+----------                                                                      
+         9                                                                      
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CAS IN (SELECT CAS FROM PLAN_DOCENTE WHERE DNI=1010 AND FF IS NULL);
+
+A                                                                               
+--------------------------------------------------                              
+GESTION DE RIESGOS                                                              
+
+SQL> SELECT DNI FROM PROFESOR WHERE P='DAVID';
+
+       DNI                                                                      
+----------                                                                      
+      1010                                                                      
+
+SQL> SELECT CAS FROM PLAN_DOCENTE WHERE DNI IN (SELECT DNI FROM PROFESOR
+  2  WHERE P='DAVID');
+
+       CAS                                                                      
+----------                                                                      
+         2                                                                      
+         9                                                                      
+         9                                                                      
+
+SQL> SELECT CAS FROM PLAN_DOCENTE WHERE FF IS NULL AND DNI IN (SELECT DNI
+  2  FROM PROFESOR WHERE P='DAVID');
+
+       CAS                                                                      
+----------                                                                      
+         9                                                                      
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CAS IN(SELECT CAS FROM PLAN_DOCENTE WHERE FF IS NULL AND DNI IN
+  4  (SELECT DNI FROM PROFESOR WHERE P='DAVID'));
+
+A                                                                               
+--------------------------------------------------                              
+GESTION DE RIESGOS                                                              
+
+SQL> SELECT AR
+  2  FROM AREA
+  3  WHERE CD IN (SELECT CD FROM DEPARTAMENTO)
+  4  WHERE D='ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION');
+WHERE D='ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION')
+*
+ERROR at line 4:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT AR
+  2  ;
+
+*
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT CD FROM DEPARTAMENTO
+  2  WHERE D='ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION';
+
+        CD                                                                      
+----------                                                                      
+         3                                                                      
+
+SQL> SELECT AR
+  2  FROM AREA
+  3  WHERE CD IN (SELECT CD FROM DEPARTAMENTO
+  4  WHERE D='ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION');
+
+AR                                                                              
+------------------------------------------------------------                    
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+ESTADISTICA E INVESTIGACION OPERATIVA                                           
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+
+SQL> SELECT DNI FROM PROFESOR WHERE CAT='CU';
+
+       DNI                                                                      
+----------                                                                      
+      1111                                                                      
+      2020                                                                      
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CAS IN (SELECT CAS FROM PLAN_DOCENTE
+  4  WHERE FF IS NULL AND DNI IN (SELECT DNI
+  5  FROM PROFESOR WHERE CAT='CU'));
+
+A                                                                               
+--------------------------------------------------                              
+ALMACENES DE DATOS                                                              
+OPTIMIZACION                                                                    
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CAR IN (SELECT CAR FROM AREA
+  4  WHERE AR='LENGUAJES Y SISTEMAS INFORMATICOS' OR
+  5  AR='CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL');
+
+A                                                                               
+--------------------------------------------------                              
+GESTION DE RIESGOS                                                              
+INTELIGENCIA ARTIFICIAL                                                         
+INFORMATICA BASICA                                                              
+MINERIA DE DATOS                                                                
+ALMACENES DE DATOS                                                              
+BASES DE DATOS                                                                  
+
+6 rows selected.
+
+SQL> SELECT DISTINCT PRO.P
+  2  FROM ASIGNATURA A,PLAN_DOCENTE PD, PROFESOR PRO
+  3  WHERE A.CAS=PD.CAS AND PRO.DNI=PD.DNI AND P.CAR=A.CAR AND PD.FF IS NULL
+  4  AND (T='FII' OR T='MII');
+WHERE A.CAS=PD.CAS AND PRO.DNI=PD.DNI AND P.CAR=A.CAR AND PD.FF IS NULL
+                                          *
+ERROR at line 3:
+ORA-00904: "P"."CAR": invalid identifier 
+
+
+SQL> SELECT DISTINCT PRO.P
+  2  FROM ASIGNATURA A,PLAN_DOCENTE PD, PROFESOR PRO
+  3  WHERE A.CAS=PD.CAS AND PRO.DNI=PD.DNI AND PRO.CAR=A.CAR AND PD.FF IS NULL
+  4  AND (T='FII' OR T='MII');
+
+P                                                                               
+------------------------------------------------------------                    
+SOLEDAD                                                                         
+CARLOS                                                                          
+
+SQL> SELECT DISTINCT PRO.P
+  2  FROM ASIGNATURA A,PLAN_DOCENTE PD, PROFESOR PRO
+  3  WHERE A.CAS=PD.CAS AND PRO.DNI=PD.DNI AND PD.FF IS NULL
+  4  AND (T='FII' OR T='MII');
+
+P                                                                               
+------------------------------------------------------------                    
+SOLEDAD                                                                         
+CARLOS                                                                          
+
+SQL> SELECT DISTINCT PRO.P
+  2  FROM ASIGNATURA A,PLAN_DOCENTE PD, PROFESOR PRO
+  3  WHERE A.CAS=PD.CAS AND PRO.DNI=PD.DNI AND PRO.CAR=A.CAR AND PD.FF IS NULL
+  4  AND (T='GII' OR T='MII');
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+PEDRO                                                                           
+SOLEDAD                                                                         
+CARLOS                                                                          
+IVAN                                                                            
+DAVID                                                                           
+MARIA                                                                           
+JOSE MANUEL                                                                     
+ANGELA                                                                          
+
+9 rows selected.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> SELECT PRO.P
+  2  FROM ASIGNATURA A,PLAN_DOCENTE PD, PROFESOR PRO
+  3  WHERE A.CAS=PD.CAS AND PRO.DNI=PD.DNI AND PRO.CAR=A.CAR AND PD.FF IS NULL
+  4  AND (T='GII' OR T='MII');
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+CARLOS                                                                          
+PEDRO                                                                           
+PEDRO                                                                           
+MARIA                                                                           
+MARIA                                                                           
+IVAN                                                                            
+ANGELA                                                                          
+DAVID                                                                           
+SOLEDAD                                                                         
+JOSE MANUEL                                                                     
+
+11 rows selected.
+
+SQL> SELECT PRO.P
+  2  FROM ASIGNATURA A,PLAN_DOCENTE PD, PROFESOR PRO
+  3  WHERE A.CAS=PD.CAS AND PRO.DNI=PD.DNI AND PRO.CAR=A.CAR AND PD.FF IS NULL
+  4  AND (T='GII' OR T='MII')
+  5  GROUP BY PRO.P;
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+PEDRO                                                                           
+SOLEDAD                                                                         
+CARLOS                                                                          
+IVAN                                                                            
+DAVID                                                                           
+MARIA                                                                           
+JOSE MANUEL                                                                     
+ANGELA                                                                          
+
+9 rows selected.
+
+SQL> SPOOL OFF
