@@ -227,3 +227,710 @@ ORA-00936: missing expression
 
 
 SQL> SPOOL OFF
+SQL> SELECT SYSDATE
+  2  FROM DUAL;
+
+SYSDATE                                                                         
+---------                                                                       
+25-NOV-17                                                                       
+
+SQL> SELECT TO_CHAR(SYSDATE, 'HH:MI:SS')
+  2  FROM DUAL;
+
+TO_CHAR(                                                                        
+--------                                                                        
+12:54:06                                                                        
+
+SQL> SELECT TO_CHAR (SYSDATE, 'DAY DD:MM:YYYY')
+  2  FROM DUAL;
+
+TO_CHAR(SYSDATE,'DAYDD:MM:YYYY')                                                
+-----------------------------------------------                                 
+SATURDAY  25:11:2017                                                            
+
+SQL> SELECT TO_CHAR(SYSDATE, 'HH:MI:SS')
+  2  FROM DUAL;
+
+TO_CHAR(                                                                        
+--------                                                                        
+01:03:19                                                                        
+
+SQL> SELECT TO_CHAR(SYSDATE, 'HH24:MI:SS')
+  2  FROM DUAL;
+
+TO_CHAR(                                                                        
+--------                                                                        
+13:03:30                                                                        
+
+SQL> SELECT TRUNC(SYSDATE-FI)
+  2  FROM PLAN_DOCENTE
+  3  WHERE CAS=11 AND DNI=8888 AND FF IS NULL;
+
+TRUNC(SYSDATE-FI)                                                               
+-----------------                                                               
+             3007                                                               
+
+SQL> SELECT (SYSDATE-FI)
+  2  FROM PLAN_DOCENTE
+  3  WHERE CAS=11 AND DNI=8888 AND FF IS NULL;
+
+(SYSDATE-FI)                                                                    
+------------                                                                    
+   3007.5464                                                                    
+
+SQL> SELECT DNI FROM PLAN_DOCENTE
+  2  WHERE FF IS NULL AND TRUNC(SYSDATE-F)>365;
+WHERE FF IS NULL AND TRUNC(SYSDATE-F)>365
+                                   *
+ERROR at line 2:
+ORA-00904: "F": invalid identifier 
+
+
+SQL> SELECT DNI FROM PLAN_DOCENTE
+  2  WHERE FF IS NULL AND TRUNC(SYSDATE-FI)>365;
+
+       DNI                                                                      
+----------                                                                      
+      4444                                                                      
+      4444                                                                      
+      1111                                                                      
+      3030                                                                      
+      2222                                                                      
+      3333                                                                      
+      1010                                                                      
+      9999                                                                      
+      5555                                                                      
+      8888                                                                      
+      2020                                                                      
+
+       DNI                                                                      
+----------                                                                      
+      7777                                                                      
+      3333                                                                      
+
+13 rows selected.
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE
+  4  WHERE FF IS NULL AND TRUNC(SYSDATE-FI)>365);
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+CARLOS                                                                          
+PEDRO                                                                           
+MARIA                                                                           
+IVAN                                                                            
+MARIO                                                                           
+FRANCISCO                                                                       
+ANGELA                                                                          
+DAVID                                                                           
+SOLEDAD                                                                         
+JOSE MANUEL                                                                     
+
+11 rows selected.
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE
+  4  WHERE TRUNC(SYSDATE-FI)>365);
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+CARLOS                                                                          
+PEDRO                                                                           
+MARIA                                                                           
+IVAN                                                                            
+CARMEN                                                                          
+MARIO                                                                           
+FRANCISCO                                                                       
+ANGELA                                                                          
+DAVID                                                                           
+SOLEDAD                                                                         
+
+P                                                                               
+------------------------------------------------------------                    
+JOSE MANUEL                                                                     
+
+12 rows selected.
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE
+  4  WHERE (TRUNC(SYSDATE-FI))>365);
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+CARLOS                                                                          
+PEDRO                                                                           
+MARIA                                                                           
+IVAN                                                                            
+CARMEN                                                                          
+MARIO                                                                           
+FRANCISCO                                                                       
+ANGELA                                                                          
+DAVID                                                                           
+SOLEDAD                                                                         
+
+P                                                                               
+------------------------------------------------------------                    
+JOSE MANUEL                                                                     
+
+12 rows selected.
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE
+  4  WHERE (SYSDATE-FI)>365);
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+CARLOS                                                                          
+PEDRO                                                                           
+MARIA                                                                           
+IVAN                                                                            
+CARMEN                                                                          
+MARIO                                                                           
+FRANCISCO                                                                       
+ANGELA                                                                          
+DAVID                                                                           
+SOLEDAD                                                                         
+
+P                                                                               
+------------------------------------------------------------                    
+JOSE MANUEL                                                                     
+
+12 rows selected.
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE
+  4  WHERE (FF IS NULL AND SYSDATE-FI>365) OR
+  5  (FF IS NOT NILL AND FF-FI>365));
+(FF IS NOT NILL AND FF-FI>365))
+    *
+ERROR at line 5:
+ORA-00908: missing NULL keyword 
+
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE
+  4  WHERE (FF IS NULL AND SYSDATE-FI>365) OR
+  5  (FF IS NOT NULL AND FF-FI>365));
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+CARLOS                                                                          
+PEDRO                                                                           
+MARIA                                                                           
+IVAN                                                                            
+CARMEN                                                                          
+MARIO                                                                           
+FRANCISCO                                                                       
+ANGELA                                                                          
+DAVID                                                                           
+SOLEDAD                                                                         
+
+P                                                                               
+------------------------------------------------------------                    
+JOSE MANUEL                                                                     
+
+12 rows selected.
+
+SQL> SELECT * FROM AREA NATURAL JOIN DEPARTAMENTO;
+
+        CD        CAR                                                           
+---------- ----------                                                           
+AR                                                                              
+------------------------------------------------------------                    
+D                                                                               
+------------------------------------------------------------                    
+         1          5                                                           
+DIDACTICA DE LA MATEMATICA                                                      
+ANALISIS MATEMATICO                                                             
+                                                                                
+         1          2                                                           
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+
+        CD        CAR                                                           
+---------- ----------                                                           
+AR                                                                              
+------------------------------------------------------------                    
+D                                                                               
+------------------------------------------------------------                    
+                                                                                
+         1          8                                                           
+MATEMATICA APLICADA                                                             
+ANALISIS MATEMATICO                                                             
+                                                                                
+         2          3                                                           
+ASTRONOMIA Y ASTROFISICA                                                        
+
+        CD        CAR                                                           
+---------- ----------                                                           
+AR                                                                              
+------------------------------------------------------------                    
+D                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+                                                                                
+         3          4                                                           
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+                                                                                
+         3          6                                                           
+
+        CD        CAR                                                           
+---------- ----------                                                           
+AR                                                                              
+------------------------------------------------------------                    
+D                                                                               
+------------------------------------------------------------                    
+ESTADISTICA E INVESTIGACION OPERATIVA                                           
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+                                                                                
+         3          7                                                           
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+                                                                                
+
+        CD        CAR                                                           
+---------- ----------                                                           
+AR                                                                              
+------------------------------------------------------------                    
+D                                                                               
+------------------------------------------------------------                    
+         4          1                                                           
+ALGEBRA                                                                         
+MATEMATICA FUNDAMENTAL                                                          
+                                                                                
+
+8 rows selected.
+
+SQL> SELECT AR FROM AREA NATURAL JOIN DEPARTAMENTO
+  2  WHERE D='ASTROFISICA';
+
+AR                                                                              
+------------------------------------------------------------                    
+ASTRONOMIA Y ASTROFISICA                                                        
+
+SQL> SELECT COUNT(P)
+  2  FROM PROFESOR NATURAL JOIN AREA
+  3  WHERE AR IN(SELECT AR FROM AREA NATURAL JOIN DEPARTAMENTO
+  4  WHERE D='ASTROFISICA');
+
+  COUNT(P)                                                                      
+----------                                                                      
+         1                                                                      
+
+SQL> SELECT DEPARTAMENTO.D, COUNT(DISTINCT DNI) N_PROF
+  2  FROM PROFESOR, AREA, DEPARTAMENTO
+  3  WHERE PROFESOR.CAR = AREA.CAR AND AREA.CD = DEPARTAMENTO.CD
+  4  GROUP BY DEPARTAMENTO.D
+  5  GROUP BY DEPARTAMENTO.D;
+GROUP BY DEPARTAMENTO.D
+*
+ERROR at line 5:
+ORA-01787: only one clause allowed per query block 
+
+
+SQL> SELECT DEPARTAMENTO.D, COUNT(DISTINCT DNI) N_PROF
+  2  FROM PROFESOR, AREA, DEPARTAMENTO
+  3  WHERE PROFESOR.CAR = AREA.CAR AND AREA.CD = DEPARTAMENTO.CD
+  4  GROUP BY DEPARTAMENTO.D;
+
+D                                                                N_PROF         
+------------------------------------------------------------ ----------         
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                    7         
+ASTROFISICA                                                           1         
+ANALISIS MATEMATICO                                                   3         
+MATEMATICA FUNDAMENTAL                                                1         
+
+SQL> RUN SELECT D, COUNT(P)
+  1  SELECT DEPARTAMENTO.D, COUNT(DISTINCT DNI) N_PROF
+  2  FROM PROFESOR, AREA, DEPARTAMENTO
+  3  WHERE PROFESOR.CAR = AREA.CAR AND AREA.CD = DEPARTAMENTO.CD
+  4* GROUP BY DEPARTAMENTO.D
+
+D                                                                N_PROF         
+------------------------------------------------------------ ----------         
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                    7         
+ASTROFISICA                                                           1         
+ANALISIS MATEMATICO                                                   3         
+MATEMATICA FUNDAMENTAL                                                1         
+
+SQL> RUN SELECT D, COUNT(P)
+  1  SELECT DEPARTAMENTO.D, COUNT(DISTINCT DNI) N_PROF
+  2  FROM PROFESOR, AREA, DEPARTAMENTO
+  3  WHERE PROFESOR.CAR = AREA.CAR AND AREA.CD = DEPARTAMENTO.CD
+  4* GROUP BY DEPARTAMENTO.D
+
+D                                                                N_PROF         
+------------------------------------------------------------ ----------         
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                    7         
+ASTROFISICA                                                           1         
+ANALISIS MATEMATICO                                                   3         
+MATEMATICA FUNDAMENTAL                                                1         
+
+SQL> SELECT D, COUNT(P)
+  2  FROM PROFESOR NATURAL JOIN AREA, DEPARTAMENTO
+  3  WHERE AREA.CD=DEPARTAMENTO.CD
+  4  GROUP BY D
+  5  GROUP BY D;
+GROUP BY D
+*
+ERROR at line 5:
+ORA-01787: only one clause allowed per query block 
+
+
+SQL> RUN SELECT D, COUNT(P) FROM PROFESOR NATURAL JOIN AREA, DEPARTAMENTO WHERE AREA.CD=DEPARTAMENTO.CD GROUP BY D
+  1  SELECT D, COUNT(P)
+  2  FROM PROFESOR NATURAL JOIN AREA, DEPARTAMENTO
+  3  WHERE AREA.CD=DEPARTAMENTO.CD
+  4  GROUP BY D
+  5* GROUP BY D
+GROUP BY D
+*
+ERROR at line 5:
+ORA-01787: only one clause allowed per query block 
+
+
+SQL> SELECT D, COUNT(P)
+  2  FROM PROFESOR NATURAL JOIN AREA, DEPARTAMENTO
+  3  WHERE AREA.CD=DEPARTAMENTO.CD
+  4  GROUP BY D
+  5  ORDER BY D;
+
+D                                                              COUNT(P)         
+------------------------------------------------------------ ----------         
+ANALISIS MATEMATICO                                                   3         
+ASTROFISICA                                                           1         
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                    7         
+MATEMATICA FUNDAMENTAL                                                1         
+
+SQL> SELECT D, COUNT(P)
+  2  FROM PROFESOR NATURAL JOIN AREA, DEPARTAMENTO
+  3  WHERE AREA.CD=DEPARTAMENTO.CD
+  4  GROUP BY D;
+
+D                                                              COUNT(P)         
+------------------------------------------------------------ ----------         
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                    7         
+ASTROFISICA                                                           1         
+ANALISIS MATEMATICO                                                   3         
+MATEMATICA FUNDAMENTAL                                                1         
+
+SQL> SELECT *
+  2  FROM PROFESOR NATURAL JOIN AREA, DEPARTAMENTO
+  3  WHERE AREA.CD=DEPARTAMENTO.CD
+  4  ;
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         6       1111                                                           
+JUAN                                                         CU                 
+ESTADISTICA E INVESTIGACION OPERATIVA                                 3         
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                   
+                                                                                
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         7       2222                                                           
+CARLOS                                                       TU                 
+LENGUAJES Y SISTEMAS INFORMATICOS                                     3         
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                   
+                                                                                
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         4       3333                                                           
+PEDRO                                                        TEU                
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                  3         
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                   
+                                                                                
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         7       4444                                                           
+MARIA                                                        TU                 
+LENGUAJES Y SISTEMAS INFORMATICOS                                     3         
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                   
+                                                                                
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         1       5555                                                           
+IVAN                                                         CEU                
+ALGEBRA                                                               4         
+         4 MATEMATICA FUNDAMENTAL                                               
+                                                                                
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         3       6666                                                           
+CARMEN                                                       CD                 
+ASTRONOMIA Y ASTROFISICA                                              2         
+         2 ASTROFISICA                                                          
+                                                                                
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         2       7777                                                           
+MARIO                                                        TU                 
+ANALISIS MATEMATICO                                                   1         
+         1 ANALISIS MATEMATICO                                                  
+                                                                                
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         5       8888                                                           
+FRANCISCO                                                    TU                 
+DIDACTICA DE LA MATEMATICA                                            1         
+         1 ANALISIS MATEMATICO                                                  
+                                                                                
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         8       9999                                                           
+ANGELA                                                       TEU                
+MATEMATICA APLICADA                                                   1         
+         1 ANALISIS MATEMATICO                                                  
+                                                                                
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         4       1010                                                           
+DAVID                                                        TU                 
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                  3         
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                   
+                                                                                
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         7       2020                                                           
+SOLEDAD                                                      CU                 
+LENGUAJES Y SISTEMAS INFORMATICOS                                     3         
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                   
+                                                                                
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         6       3030                                                           
+JOSE MANUEL                                                  TEU                
+ESTADISTICA E INVESTIGACION OPERATIVA                                 3         
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                   
+                                                                                
+
+12 rows selected.
+
+SQL> SELECT COUNT(DISTINCT P) TITULACIONES
+  2  FROM PLAN_DOCENTE NATURAL JOIN ASIGNATURA,
+  3  DEPARTAMENTO NATURAL JOIN AREA
+  4  WHERE ASIGNATURA.CAR = AREA.CAR AND
+  5  D='ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION';
+SELECT COUNT(DISTINCT P) TITULACIONES
+                      *
+ERROR at line 1:
+ORA-00904: "P": invalid identifier 
+
+
+SQL> SELECT COUNT(DISTINCT T) TITULACIONES
+  2  FROM PLAN_DOCENTE NATURAL JOIN ASIGNATURA,
+  3  DEPARTAMENTO NATURAL JOIN AREA
+  4  WHERE ASIGNATURA.CAR = AREA.CAR AND
+  5  D='ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION';
+
+TITULACIONES                                                                    
+------------                                                                    
+           2                                                                    
+
+SQL> SELECT *
+  2  FROM PROFESOR NATURAL JOIN AREA;
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+         1       5555                                                           
+IVAN                                                         CEU                
+ALGEBRA                                                               4         
+                                                                                
+         2       7777                                                           
+MARIO                                                        TU                 
+ANALISIS MATEMATICO                                                   1         
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+                                                                                
+         3       6666                                                           
+CARMEN                                                       CD                 
+ASTRONOMIA Y ASTROFISICA                                              2         
+                                                                                
+         4       1010                                                           
+DAVID                                                        TU                 
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                  3         
+                                                                                
+         4       3333                                                           
+PEDRO                                                        TEU                
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                  3         
+                                                                                
+         5       8888                                                           
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+FRANCISCO                                                    TU                 
+DIDACTICA DE LA MATEMATICA                                            1         
+                                                                                
+         6       1111                                                           
+JUAN                                                         CU                 
+ESTADISTICA E INVESTIGACION OPERATIVA                                 3         
+                                                                                
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+         6       3030                                                           
+JOSE MANUEL                                                  TEU                
+ESTADISTICA E INVESTIGACION OPERATIVA                                 3         
+                                                                                
+         7       2222                                                           
+CARLOS                                                       TU                 
+LENGUAJES Y SISTEMAS INFORMATICOS                                     3         
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+                                                                                
+         7       4444                                                           
+MARIA                                                        TU                 
+LENGUAJES Y SISTEMAS INFORMATICOS                                     3         
+                                                                                
+         7       2020                                                           
+SOLEDAD                                                      CU                 
+
+       CAR        DNI                                                           
+---------- ----------                                                           
+P                                                            CAT                
+------------------------------------------------------------ -----              
+AR                                                                   CD         
+------------------------------------------------------------ ----------         
+LENGUAJES Y SISTEMAS INFORMATICOS                                     3         
+                                                                                
+         8       9999                                                           
+ANGELA                                                       TEU                
+MATEMATICA APLICADA                                                   1         
+                                                                                
+
+12 rows selected.
+
+SQL> SELECT COUNT(DNI)
+  2  FROM PROFESOR NATURAL JOIN AREA
+  3  WHERE AR LIKE 'A%';
+
+COUNT(DNI)                                                                      
+----------                                                                      
+         3                                                                      
+
+SQL> SPOOL OFF
