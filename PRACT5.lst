@@ -520,3 +520,384 @@ ANGELA
 9 rows selected.
 
 SQL> SPOOL OFF
+SQL> SPOOL
+currently spooling to PRACT5.lst
+SQL> SELECT CAS FROM ASIGNATURA
+  2  WHERE T='GII' AND T='MII';
+
+no rows selected
+
+SQL> SELECT CAS FROM ASIGNATURA
+  2  WHERE T='GII';
+
+       CAS                                                                      
+----------                                                                      
+         1                                                                      
+         2                                                                      
+         5                                                                      
+         6                                                                      
+         7                                                                      
+         8                                                                      
+         9                                                                      
+
+7 rows selected.
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN(SELECT DNI
+  4  FROM PLAN_DOCENTE NATURAL JOIN ASIGNATURA
+  5  WHERE FF IS NULL AND T='GII')
+  6  INTERSECT
+  7  SELECT P
+  8  FROM PROFESOR
+  9  WHERE DNI IN (SELECT DNI
+ 10  FROM PLAN_DOCENTE NATURAL JOIN ASIGNATURA
+ 11  WHERE FF IS NULL AND T='MII');
+
+no rows selected
+
+SQL> SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL;
+
+       DNI                                                                      
+----------                                                                      
+      4444                                                                      
+      4444                                                                      
+      1111                                                                      
+      3030                                                                      
+      2222                                                                      
+      3333                                                                      
+      1010                                                                      
+      9999                                                                      
+      5555                                                                      
+      8888                                                                      
+      2020                                                                      
+
+       DNI                                                                      
+----------                                                                      
+      7777                                                                      
+      3333                                                                      
+
+13 rows selected.
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI NOT IN (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL);
+
+P                                                                               
+------------------------------------------------------------                    
+CARMEN                                                                          
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE T='GII' AND CAS IN(SELECT CAS
+  4  FROM PLAN_DOCENTE
+  5  WHERE FF IS NULL);
+
+A                                                                               
+--------------------------------------------------                              
+BASES DE DATOS                                                                  
+INTELIGENCIA ARTIFICIAL                                                         
+INFORMATICA BASICA                                                              
+ALGEBRA                                                                         
+CALCULO                                                                         
+OPTIMIZACION                                                                    
+GESTION DE RIESGOS                                                              
+
+7 rows selected.
+
+SQL> SELECT AR AREAS, A ASIGNATURAS
+  2  FROM AREA NATURAL JOIN ASIGNATURA;
+
+AREAS                                                                           
+------------------------------------------------------------                    
+ASIGNATURAS                                                                     
+--------------------------------------------------                              
+ALGEBRA                                                                         
+ALGEBRA                                                                         
+                                                                                
+ANALISIS MATEMATICO                                                             
+ANALISIS COMPLEJO                                                               
+                                                                                
+ASTRONOMIA Y ASTROFISICA                                                        
+ASTRONOMIA                                                                      
+                                                                                
+
+AREAS                                                                           
+------------------------------------------------------------                    
+ASIGNATURAS                                                                     
+--------------------------------------------------                              
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+GESTION DE RIESGOS                                                              
+                                                                                
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+INTELIGENCIA ARTIFICIAL                                                         
+                                                                                
+DIDACTICA DE LA MATEMATICA                                                      
+ENSENANZA DE LA MATEMATICA                                                      
+                                                                                
+
+AREAS                                                                           
+------------------------------------------------------------                    
+ASIGNATURAS                                                                     
+--------------------------------------------------                              
+ESTADISTICA E INVESTIGACION OPERATIVA                                           
+OPTIMIZACION                                                                    
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+INFORMATICA BASICA                                                              
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+MINERIA DE DATOS                                                                
+                                                                                
+
+AREAS                                                                           
+------------------------------------------------------------                    
+ASIGNATURAS                                                                     
+--------------------------------------------------                              
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+ALMACENES DE DATOS                                                              
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+BASES DE DATOS                                                                  
+                                                                                
+MATEMATICA APLICADA                                                             
+CALCULO                                                                         
+                                                                                
+
+12 rows selected.
+
+SQL> SELECT AR AREAS, A ASIGNATURAS
+  2  FROM AREA NATURAL JOIN ASIGNATURA;
+
+AREAS                                                                           
+------------------------------------------------------------                    
+ASIGNATURAS                                                                     
+--------------------------------------------------                              
+ALGEBRA                                                                         
+ALGEBRA                                                                         
+                                                                                
+ANALISIS MATEMATICO                                                             
+ANALISIS COMPLEJO                                                               
+                                                                                
+ASTRONOMIA Y ASTROFISICA                                                        
+ASTRONOMIA                                                                      
+                                                                                
+
+AREAS                                                                           
+------------------------------------------------------------                    
+ASIGNATURAS                                                                     
+--------------------------------------------------                              
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+GESTION DE RIESGOS                                                              
+                                                                                
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+INTELIGENCIA ARTIFICIAL                                                         
+                                                                                
+DIDACTICA DE LA MATEMATICA                                                      
+ENSENANZA DE LA MATEMATICA                                                      
+                                                                                
+
+AREAS                                                                           
+------------------------------------------------------------                    
+ASIGNATURAS                                                                     
+--------------------------------------------------                              
+ESTADISTICA E INVESTIGACION OPERATIVA                                           
+OPTIMIZACION                                                                    
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+INFORMATICA BASICA                                                              
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+MINERIA DE DATOS                                                                
+                                                                                
+
+AREAS                                                                           
+------------------------------------------------------------                    
+ASIGNATURAS                                                                     
+--------------------------------------------------                              
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+ALMACENES DE DATOS                                                              
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+BASES DE DATOS                                                                  
+                                                                                
+MATEMATICA APLICADA                                                             
+CALCULO                                                                         
+                                                                                
+
+12 rows selected.
+
+SQL> SELECT AREA.AR AREAS, ASIGNATURA.A ASIGNATURAS
+  2  FROM AREA NATURAL JOIN ASIGNATURA;
+
+AREAS                                                                           
+------------------------------------------------------------                    
+ASIGNATURAS                                                                     
+--------------------------------------------------                              
+ALGEBRA                                                                         
+ALGEBRA                                                                         
+                                                                                
+ANALISIS MATEMATICO                                                             
+ANALISIS COMPLEJO                                                               
+                                                                                
+ASTRONOMIA Y ASTROFISICA                                                        
+ASTRONOMIA                                                                      
+                                                                                
+
+AREAS                                                                           
+------------------------------------------------------------                    
+ASIGNATURAS                                                                     
+--------------------------------------------------                              
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+GESTION DE RIESGOS                                                              
+                                                                                
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+INTELIGENCIA ARTIFICIAL                                                         
+                                                                                
+DIDACTICA DE LA MATEMATICA                                                      
+ENSENANZA DE LA MATEMATICA                                                      
+                                                                                
+
+AREAS                                                                           
+------------------------------------------------------------                    
+ASIGNATURAS                                                                     
+--------------------------------------------------                              
+ESTADISTICA E INVESTIGACION OPERATIVA                                           
+OPTIMIZACION                                                                    
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+INFORMATICA BASICA                                                              
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+MINERIA DE DATOS                                                                
+                                                                                
+
+AREAS                                                                           
+------------------------------------------------------------                    
+ASIGNATURAS                                                                     
+--------------------------------------------------                              
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+ALMACENES DE DATOS                                                              
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+BASES DE DATOS                                                                  
+                                                                                
+MATEMATICA APLICADA                                                             
+CALCULO                                                                         
+                                                                                
+
+12 rows selected.
+
+SQL> SELECT D DEPARTAMENTO,AR AREA
+  2  FROM DEPARTAMENTO NATURAL JOIN AREA
+  3  ORDER BY D,AR;
+
+DEPARTAMENTO                                                                    
+------------------------------------------------------------                    
+AREA                                                                            
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+                                                                                
+ANALISIS MATEMATICO                                                             
+DIDACTICA DE LA MATEMATICA                                                      
+                                                                                
+ANALISIS MATEMATICO                                                             
+MATEMATICA APLICADA                                                             
+                                                                                
+
+DEPARTAMENTO                                                                    
+------------------------------------------------------------                    
+AREA                                                                            
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+ASTRONOMIA Y ASTROFISICA                                                        
+                                                                                
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+                                                                                
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTADISTICA E INVESTIGACION OPERATIVA                                           
+                                                                                
+
+DEPARTAMENTO                                                                    
+------------------------------------------------------------                    
+AREA                                                                            
+------------------------------------------------------------                    
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+ALGEBRA                                                                         
+                                                                                
+
+8 rows selected.
+
+SQL> 
+SQL> SELECT D DEPARTAMENTOS, P PROFESORES
+  2  FROM DEPARTAMENTO NATURAL JOIN PROFESOR
+  3  WHERE P IN(SELECT P
+  4  FROM PROFESOR NATURAL JOIN AREA
+  5  WHERE AREA.CD=DEPARTAMENTO.CD)
+  6  ORDER BY D,P;
+
+DEPARTAMENTOS                                                                   
+------------------------------------------------------------                    
+PROFESORES                                                                      
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANGELA                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+FRANCISCO                                                                       
+                                                                                
+ANALISIS MATEMATICO                                                             
+MARIO                                                                           
+                                                                                
+
+DEPARTAMENTOS                                                                   
+------------------------------------------------------------                    
+PROFESORES                                                                      
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+CARMEN                                                                          
+                                                                                
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+CARLOS                                                                          
+                                                                                
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+DAVID                                                                           
+                                                                                
+
+DEPARTAMENTOS                                                                   
+------------------------------------------------------------                    
+PROFESORES                                                                      
+------------------------------------------------------------                    
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+JOSE MANUEL                                                                     
+                                                                                
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+JUAN                                                                            
+                                                                                
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+MARIA                                                                           
+                                                                                
+
+DEPARTAMENTOS                                                                   
+------------------------------------------------------------                    
+PROFESORES                                                                      
+------------------------------------------------------------                    
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+PEDRO                                                                           
+                                                                                
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+SOLEDAD                                                                         
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+IVAN                                                                            
+                                                                                
+
+12 rows selected.
+
+SQL> 
+SQL> SPOOL OFF
