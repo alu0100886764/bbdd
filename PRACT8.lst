@@ -1,0 +1,208 @@
+SQL> CREATE TABLE TITULACION
+  2  (T CHAR(4) NOT NULL,
+  3  FAC VARCHAR2(50)FASFASFSDFASF;
+FAC VARCHAR2(50)FASFASFSDFASF
+                *
+ERROR at line 3:
+ORA-00907: missing right parenthesis 
+
+
+SQL> CREATE TABLE TITULACION
+  2  (T CHAR(4) PRIMARY KEY,
+  3  FAC VARCHAR2(50);
+FAC VARCHAR2(50)
+               *
+ERROR at line 3:
+ORA-00907: missing right parenthesis 
+
+
+SQL> CREATE TABLE TITULACION
+  2  (T CHAR(4) PRIMARY KEY,
+  3  FAC VARCHAR2(50));
+
+Table created.
+
+SQL> INSERT INTO TITULACION VALUES(SELECT DISTINCT T FROM ASIGNATURA,NULL);
+INSERT INTO TITULACION VALUES(SELECT DISTINCT T FROM ASIGNATURA,NULL)
+                              *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> INSERT INTO TITULACION( T)
+  2  SELECT DISTINCT T FROM ASIGNATURA;
+
+4 rows created.
+
+SQL> SELECT * FROM TITULACION;
+
+T    FAC                                                                        
+---- --------------------------------------------------                         
+GF                                                                              
+GM                                                                              
+GII                                                                             
+MII                                                                             
+
+SQL> UPDATE TITULACION
+  2  SET FAC=&FACULTAD
+  3  WHERE T=&TITULACION;
+Enter value for facultad: ETSII
+old   2: SET FAC=&FACULTAD
+new   2: SET FAC=ETSII
+Enter value for titulacion: FAS
+old   3: WHERE T=&TITULACION
+new   3: WHERE T=FAS
+WHERE T=FAS
+        *
+ERROR at line 3:
+ORA-00904: "FAS": invalid identifier 
+
+
+SQL> UPDATE TITULACION
+  2  SET FAC=&FACULTAD
+  3  WHERE T=&TITULACION;
+Enter value for facultad: 'ETSII'
+old   2: SET FAC=&FACULTAD
+new   2: SET FAC='ETSII'
+Enter value for titulacion: 'GM'
+old   3: WHERE T=&TITULACION
+new   3: WHERE T='GM'
+
+1 row updated.
+
+SQL> UPDATE TITULACION
+  2  SET FAC=&FACULTAD
+  3  WHERE T=&TITULACION;
+Enter value for facultad: MYF
+old   2: SET FAC=&FACULTAD
+new   2: SET FAC=MYF
+Enter value for titulacion: FE
+old   3: WHERE T=&TITULACION
+new   3: WHERE T=FE
+WHERE T=FE
+        *
+ERROR at line 3:
+ORA-00904: "FE": invalid identifier 
+
+
+SQL> UPDATE TITULACION
+  2  SET FAC=&FACULTAD
+  3  WHERE T=&TITULACION;
+Enter value for facultad: 'MYF'
+old   2: SET FAC=&FACULTAD
+new   2: SET FAC='MYF'
+Enter value for titulacion: 'GF'
+old   3: WHERE T=&TITULACION
+new   3: WHERE T='GF'
+
+1 row updated.
+
+SQL> UPDATE TITULACION
+  2  SET FAC=&FACULTAD
+  3  WHERE T=&TITULACION;
+Enter value for facultad: 'MYF'
+old   2: SET FAC=&FACULTAD
+new   2: SET FAC='MYF'
+Enter value for titulacion: 'GM'
+old   3: WHERE T=&TITULACION
+new   3: WHERE T='GM'
+
+1 row updated.
+
+SQL> SELECT * FROM TITULACION;
+
+T    FAC                                                                        
+---- --------------------------------------------------                         
+GF   MYF                                                                        
+GM   MYF                                                                        
+GII                                                                             
+MII                                                                             
+
+SQL> SET FAC=&FACULTAD
+Enter value for facultad: FAFA
+SP2-0158: unknown SET option "FAC=FAFA"
+SQL> UPDATE TITULACION
+  2  SET FAC=&FACULTAD
+  3  WHERE T=&TITULACION;
+Enter value for facultad: 'ETSII'
+old   2: SET FAC=&FACULTAD
+new   2: SET FAC='ETSII'
+Enter value for titulacion: 'GII'
+old   3: WHERE T=&TITULACION
+new   3: WHERE T='GII'
+
+1 row updated.
+
+SQL> UPDATE TITULACION
+  2  SET FAC=&FACULTAD
+  3  WHERE T=&TITULACION;
+Enter value for facultad: 'ETSII'
+old   2: SET FAC=&FACULTAD
+new   2: SET FAC='ETSII'
+Enter value for titulacion: 'MII'
+old   3: WHERE T=&TITULACION
+new   3: WHERE T='MII'
+
+1 row updated.
+
+SQL> SELECT * FROM TITULACION;
+
+T    FAC                                                                        
+---- --------------------------------------------------                         
+GF   MYF                                                                        
+GM   MYF                                                                        
+GII  ETSII                                                                      
+MII  ETSII                                                                      
+
+SQL> CREATE SYNONYM TIT FOR TITULACION;
+
+Synonym created.
+
+SQL> SELECT * FROM TIT;
+
+T    FAC                                                                        
+---- --------------------------------------------------                         
+GF   MYF                                                                        
+GM   MYF                                                                        
+GII  ETSII                                                                      
+MII  ETSII                                                                      
+
+SQL> ALTER TABLE ASIGNATURA
+  2  CONSTRAINT T_CASCADA;
+CONSTRAINT T_CASCADA
+*
+ERROR at line 2:
+ORA-01735: invalid ALTER TABLE option 
+
+
+SQL> ALTER TABLE ASIGNATURA
+  2  ADD T REFERENCES TITULACION ON DELETE CASCADE;
+ADD T REFERENCES TITULACION ON DELETE CASCADE
+    *
+ERROR at line 2:
+ORA-01430: column being added already exists in table 
+
+
+SQL> ALTER TABLE ASIGNATURA
+  2  ADD CONSTRAINT T_CASCADA FOREIGN KEY(T) REFERENCES TITULACION ON DELETE CASCADE;
+
+Table altered.
+
+SQL> ALTER TABLE TITULACION
+  2  MODIFY (T CHAR(6);
+MODIFY (T CHAR(6)
+                *
+ERROR at line 2:
+ORA-00907: missing right parenthesis 
+
+
+SQL> ALTER TABLE TITULACION
+  2  MODIFY (T CHAR(6));
+ALTER TABLE TITULACION
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (ALU0100886764.T_CASCADA) violated - child 
+record found 
+
+
+SQL> EXIT
