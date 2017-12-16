@@ -1,0 +1,45 @@
+SQL> TYPE dato IS VARRAY(20) OF AREA.AR%TYPE;
+SP2-0734: unknown command beginning "TYPE dato ..." - rest of line ignored.
+SQL> plsql
+SP2-0042: unknown command "plsql" - rest of line ignored.
+SQL> TYPE dato IS VARRAY(20) OF AREA.AR%TYPE;
+SP2-0734: unknown command beginning "TYPE dato ..." - rest of line ignored.
+SQL> CREATE PROCEDURE MOSTRAR_NOMBRE_AREAS(cd IN DEPARTAMENTO.CD%TYPE, area OUT dato)
+  2  IS
+  3  BEGIN
+  4  SELECT AR
+  5  INTO AREA
+  6  FROM DEPARTAMENTO NATURAL JOIN AREA
+  7  WHERE CD = cd;
+  8  END;
+  9  DECLARE
+ 10  area OUT dato
+ 11  BEGIN
+ 12  MOSTRAR_NOMBRE_AREAS(1,area);
+ 13  FOR i IN 1..area.count LOOP
+ 14  DBMS_OUTPUT.PUT_LINE(area(i));
+ 15  END LOOP;
+ 16  END;
+ 17  /
+
+Warning: Procedure created with compilation errors.
+
+SQL> CALL MOSTRAR_NOMBRE_AREAS();
+CALL MOSTRAR_NOMBRE_AREAS()
+     *
+ERROR at line 1:
+ORA-06575: Package or function MOSTRAR_NOMBRE_AREAS is in an invalid state 
+
+
+SQL> CALL MOSTRAR_NOMBRE_AREAS(1,2);
+CALL MOSTRAR_NOMBRE_AREAS(1,2)
+     *
+ERROR at line 1:
+ORA-06575: Package or function MOSTRAR_NOMBRE_AREAS is in an invalid state 
+
+
+SQL> TYPE dato IS_VARRAY(20) OF AREA.AR%TYPE;
+SP2-0734: unknown command beginning "TYPE dato ..." - rest of line ignored.
+SQL> TYPE dato IS VARRAY(20) OF AREA.AR%TYPE;
+SP2-0734: unknown command beginning "TYPE dato ..." - rest of line ignored.
+SQL> SPOOL OFF
